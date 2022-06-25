@@ -34,3 +34,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "tranquil-sands-57593" #Must be unique in Heroku
           heroku_email: "thushan.perera95@gmail.com"
+          healthcheck: "https://tranquil-sands-57593.herokuapp.com/health"
+          checkstring: "ok"
