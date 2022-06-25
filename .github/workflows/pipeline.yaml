@@ -36,3 +36,4 @@ jobs:
           heroku_email: "thushan.perera95@gmail.com"
           healthcheck: "https://tranquil-sands-57593.herokuapp.com/health"
           checkstring: "ok"
+          rollbackonhealthcheckfailed: true
