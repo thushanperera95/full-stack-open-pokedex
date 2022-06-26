@@ -32,7 +32,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: deploy to heroku
-        if: ${{ github.event_name == 'push' }} && ${{ !join(github.event.commits.*.message, ',').contains('#skip') }}
+        if: ${{ (github.event_name == 'push') && (!contains(join(github.event.commits.*.message, ','), '#skip')) }}
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
@@ -44,7 +44,7 @@ jobs:
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
-    if: ${{ (github.event_name == 'push') && (!(join(github.event.commits.*.message, ',').contains('#skip'))) }}
+    if: ${{ (github.event_name == 'push') && (!contains(join(github.event.commits.*.message, ','), '#skip')) }}
     steps:
       - uses: actions/checkout@v3
         with:
