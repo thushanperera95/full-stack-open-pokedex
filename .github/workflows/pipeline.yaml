@@ -44,7 +44,7 @@ jobs:
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'push' }} && ${{ !join(github.event.commits.*.message, ',').contains('#skip') }}
+    if: ${{ (github.event_name == 'push') && (!join(github.event.commits.*.message, ',').contains('#skip')) }}
     steps:
       - uses: actions/checkout@v3
         with:
