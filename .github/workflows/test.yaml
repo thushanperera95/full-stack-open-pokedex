@@ -30,3 +30,7 @@ jobs:
         env:
           COMMIT_MESSAGES_JOINED_CONTAINS: ${{ toJson(contains(join(github.event.commits.*.message, ','), '#skip')) }}
         run: echo "$COMMIT_MESSAGES_JOINED_CONTAINS"
+      - name: commit messages joined contains NOT
+        env:
+          COMMIT_MESSAGES_JOINED_CONTAINS: ${{ toJson(!contains(join(github.event.commits.*.message, ','), '#skip')) }}
+        run: echo "$COMMIT_MESSAGES_JOINED_CONTAINS"
