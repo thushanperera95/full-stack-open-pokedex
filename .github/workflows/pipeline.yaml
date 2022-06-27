@@ -63,7 +63,7 @@ jobs:
     steps:
       - uses: rjstone/discord-webhook-notify@v1
         with:
-          severify: info
+          severity: info
           color: '#78ff75'
           description: to https://tranquil-sands-57593.herokuapp.com/ by ${{ github.event.pusher.name }}
           text: A new version of Pokedex deployed
@@ -76,7 +76,7 @@ jobs:
     steps:
       - uses: rjstone/discord-webhook-notify@v1
         with:
-          severify: error
+          severity: error
           color: '#ff0202'
           description: commit https://github.com/thushanperera95/full-stack-open-pokedex/commit/${{ github.sha }} by ${{ github.actor }} broke the build :(
           text: Build failed
