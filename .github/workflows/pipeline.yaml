@@ -60,7 +60,7 @@ jobs:
   notify_discord_success:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
-    if: ${{ needs.simple_deployment_pipeline.steps.deploy.conclusion == 'success' }}
+    if: ${{ (success()) && (github.event_name == 'push') }}
     steps:
       - uses: rjstone/discord-webhook-notify@v1
         with:
