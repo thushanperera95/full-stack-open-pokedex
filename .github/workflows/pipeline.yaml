@@ -78,6 +78,6 @@ jobs:
         with:
           severify: error
           color: '#ff0202'
-          description: commit ${{ github.event.commits.*.url }} by ${{ github.event.pusher.name }} broke the build :(
+          description: commit ${{ github.event.head_commit.url }} by ${{ github.event.pusher.name }} broke the build :(
           text: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
