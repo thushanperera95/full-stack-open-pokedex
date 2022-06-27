@@ -56,22 +56,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
 
-  notify_discord:
+  notify_discord_success:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
+    if: ${{ success() }}
     steps:
-      - name: Notify Success
-        uses: rjstone/discord-webhook-notify@v1
-        if: ${{ success() }}
+      - uses: rjstone/discord-webhook-notify@v1
         with:
           severify: info
           color: '#78ff75'
           description: to https://tranquil-sands-57593.herokuapp.com/ by ${{ github.event.pusher.name }}
           text: A new version of Pokedex deployed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Notify Failure
-        uses: rjstone/discord-webhook-notify@v1
-        if: ${{ failure() }}
+
+  notify_discord_failure:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    if: ${{ failure() }}
+    steps:
+      - uses: rjstone/discord-webhook-notify@v1
         with:
           severify: error
           color: '#ff0202'
