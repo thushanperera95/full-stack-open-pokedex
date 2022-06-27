@@ -22,7 +22,7 @@ jobs:
       - name: lint
         run: npm run eslint
       - name: build
-        run: npm run build-break
+        run: npm run build
       - name: test
         run: npm run test
       - name: e2e tests
@@ -32,6 +32,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: deploy to heroku
+        id: deploy
         if: ${{ (github.event_name == 'push') && (!contains(join(github.event.commits.*.message, ','), '#skip')) }}
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
@@ -59,13 +60,13 @@ jobs:
   notify_discord_success:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
-    if: ${{ success() }}
+    if: ${{ needs.simple_deployment_pipeline.steps.deploy.conclusion == 'success' }}
     steps:
       - uses: rjstone/discord-webhook-notify@v1
         with:
-          severify: info
+          severity: info
           color: '#78ff75'
-          description: to https://tranquil-sands-57593.herokuapp.com/ by ${{ github.event.pusher.name }}
+          description: to https://tranquil-sands-57593.herokuapp.com/ by ${{ github.actor }}
           text: A new version of Pokedex deployed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
@@ -76,8 +77,8 @@ jobs:
     steps:
       - uses: rjstone/discord-webhook-notify@v1
         with:
-          severify: error
+          severity: error
           color: '#ff0202'
-          description: commit ${{ github.event.head_commit.url }} by ${{ github.event.pusher.name }} broke the build :(
+          description: commit https://github.com/thushanperera95/full-stack-open-pokedex/commit/${{ github.sha }} by ${{ github.actor }} broke the build :(
           text: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
