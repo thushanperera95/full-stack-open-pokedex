@@ -78,6 +78,6 @@ jobs:
         with:
           severify: error
           color: '#ff0202'
-          description: commit ${{ github.event.head_commit.url }} by ${{ github.event.pusher.name }} broke the build :(
+          description: commit https://github.com/thushanperera95/full-stack-open-pokedex/commit/${{ github.sha }} by ${{ github.actor }} broke the build :(
           text: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
