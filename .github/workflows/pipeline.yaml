@@ -22,7 +22,7 @@ jobs:
       - name: lint
         run: npm run eslint
       - name: build
-        run: npm run build
+        run: npm run build-break
       - name: test
         run: npm run test
       - name: e2e tests
@@ -41,6 +41,7 @@ jobs:
           healthcheck: "https://tranquil-sands-57593.herokuapp.com/health"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
+
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
@@ -54,3 +55,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+  notify_discord:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Notify Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ needs.simple_deployment_pipeline.result == 'success' }}
+        with:
+          severify: info
+          color: '#78ff75'
+          description: to https://tranquil-sands-57593.herokuapp.com/ by ${{ github.event.pusher.name }}
+          text: A new version of Pokedex deployed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Notify Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ needs.simple_deployment_pipeline.result == 'failure' }}
+        with:
+          severify: error
+          color: '#ff0202'
+          description: commit ${{ github.event.commits.*.url }} by ${{ github.event.pusher.name }} broke the build :(
+          text: Build failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
