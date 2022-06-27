@@ -62,7 +62,7 @@ jobs:
     steps:
       - name: Notify Success
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ needs.simple_deployment_pipeline.result == 'success' }}
+        if: ${{ success() }}
         with:
           severify: info
           color: '#78ff75'
@@ -71,7 +71,7 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Notify Failure
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ needs.simple_deployment_pipeline.result == 'failure' }}
+        if: ${{ failure() }}
         with:
           severify: error
           color: '#ff0202'
