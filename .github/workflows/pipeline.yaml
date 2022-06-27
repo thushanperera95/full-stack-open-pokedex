@@ -59,13 +59,13 @@ jobs:
   notify_discord_success:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
-    if: ${{ success() }}
+    if: ${{ needs.simple_deployment_pipeline.result == 'success' }}
     steps:
       - uses: rjstone/discord-webhook-notify@v1
         with:
           severity: info
           color: '#78ff75'
-          description: to https://tranquil-sands-57593.herokuapp.com/ by ${{ github.event.pusher.name }}
+          description: to https://tranquil-sands-57593.herokuapp.com/ by ${{ github.actor }}
           text: A new version of Pokedex deployed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
